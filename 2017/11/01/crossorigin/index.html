@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="跨域是前端开发中常见的需求，本文简要介绍跨域的原因及几种常见的跨域方案。">
+<meta name="keywords" content="前端综合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨域">
+<meta property="og:url" content="http://yoursite.com/2017/11/01/crossorigin/index.html">
+<meta property="og:site_name" content="简记">
+<meta property="og:description" content="跨域是前端开发中常见的需求，本文简要介绍跨域的原因及几种常见的跨域方案。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-18T13:05:07.873Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跨域">
+<meta name="twitter:description" content="跨域是前端开发中常见的需求，本文简要介绍跨域的原因及几种常见的跨域方案。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/01/crossorigin/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>跨域 | 简记</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">keep moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/01/crossorigin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wangjinwei">
+      <meta itemprop="description" content="write things">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">跨域
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-11-01 08:20:47" itemprop="dateCreated datePublished" datetime="2017-11-01T08:20:47+08:00">2017-11-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-02-18 21:05:07" itemprop="dateModified" datetime="2019-02-18T21:05:07+08:00">2019-02-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>跨域是前端开发中常见的需求，本文简要介绍跨域的原因及几种常见的跨域方案。<br><a id="more"></a></p>
+<h3 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h3><p><strong>同源</strong>指的是两个页面有相同的协议头、端口号和域名，比如<code>http://www.baidu.com/index.html</code>和<code>htt://www.baidu.com/test.html</code>这两个页面就是同源的，而<code>http://www.baidu.com</code>与<code>https://www.baidu.com</code>是不同源的。</p>
+<p><strong>同源策略</strong>限制从一个源加载的文档或脚本与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的关键的安全机制。</p>
+<blockquote>
+<p>浏览器都有一个同源策略，其限制之一就是不能通过ajax的方法去请求不同源中的文档。 它的第二个限制是浏览器中不同域的框架 iframe 之间是不能进行 js 交互操作的。不同的框架之间是可以获取window对象的，但却无法获取相应的属性和方法。</p>
+</blockquote>
+<p><strong>跨域请求</strong>是指一个资源从与该资源本身所在的服务器不同的源请求一个资源时发起的HTTP请求。</p>
+<p>出于安全考虑，浏览器会限制从脚本内发起的跨域<code>HTTP</code>请求。例如，<code>XMLHttqRequest</code>和<code>Fetch</code>遵循同源策略。浏览器限制发起跨域请求或者跨域请求可以正常发起，但是返回结果被浏览器拦截了。</p>
+<h3 id="二、跨域策略"><a href="#二、跨域策略" class="headerlink" title="二、跨域策略"></a>二、跨域策略</h3><p>日常开发中，经常需要用到跨域实现数据共享，所以掌握跨域的技术是很重要的。</p>
+<h4 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h4><p>CORS（跨域资源共享）机制允许 Web 应用服务器进行跨域访问控制，从而使跨域数据传输得以安全进行。</p>
+<blockquote>
+<p>整个 CORS 通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS 通信与同源的 AJAX 通信没有差别，代码完全一样。浏览器一旦发现 AJAX 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。<br>因此，实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信。</p>
+</blockquote>
+<p><strong>原理</strong><br>CORS 新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求非简单请求必须先通过 Options 方法发起预请求。</p>
+<p>新增字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 请求首部字段</span><br><span class="line">Origin: &lt;origin&gt;</span><br><span class="line">Access-Control-Request-Method: &lt;method&gt;</span><br><span class="line">Access-Control-Request-Headers: &lt;field-name&gt;[, &lt;field-name&gt;]*</span><br><span class="line"></span><br><span class="line">// 响应首部字段</span><br><span class="line">Access-Control-Allow-Origin: &lt;origin&gt; | *</span><br><span class="line">Access-Control-Expose-Headers: X-My-Custom-Header, X-Another-Custom-Header</span><br><span class="line">Access-Control-Max-Age: &lt;delta-seconds&gt;</span><br><span class="line">Access-Control-Allow-Credentials: true</span><br><span class="line">Access-Control-Allow-Methods: &lt;method&gt;[, &lt;method&gt;]*</span><br><span class="line">Access-Control-Allow-Headers: &lt;field-name&gt;[, &lt;field-name&gt;]*</span><br></pre></td></tr></table></figure></p>
+<p><strong>场景</strong><br>CORS 允许在下列场景中使用跨域 HTTP 请求：<br>1）由 XMLHttpRequest 或 Fetch 发起的跨域 HTTP 请求<br>2）Web 字体 (CSS 中通过 @font-face 使用跨域字体资源）<br>3）WebGL 贴图<br>4）使用 canvas.drawImage 方法将 Images/video 画面绘制到 canvas<br>5）样式表（使用 CSSOM）<br>6）Scripts (未处理的异常)</p>
+<p><strong>优缺点</strong><br>优点：CORS 支持所有类型的 HTTP 请求，且可以使用 ajax 方式获取数据。<br>缺点：并不安全，但可利用 OAuth2 措施加强保障。</p>
+<h4 id="postMessage"><a href="#postMessage" class="headerlink" title="postMessage"></a><strong>postMessage</strong></h4><p>window.postMessage() 方法可以安全地实现跨源通信。</p>
+<p><strong>原理</strong><br>window.postMessage() 方法被调用时，会在所有页面脚本执行完毕之后（例如, 在该方法之后设置的事件、之前设置的 timeout 事件等）向目标窗口派发一个<code>MessageEvent</code> 消息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//向其他页面发送消息</span><br><span class="line">window.postMessage(message, targetOrigin, [transfer]);</span><br><span class="line"></span><br><span class="line">// 其他页面监听 message 事件</span><br><span class="line">window.addEventListener(&quot;message&quot;, (e) =&gt; &#123;</span><br><span class="line">  let origin = event.origin || event.originalEvent.origin;</span><br><span class="line">  // 安全性验证</span><br><span class="line">  if (origin !== &quot;http://example.org:8080&quot;)</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(e);</span><br><span class="line">&#125;, false);</span><br></pre></td></tr></table></figure></p>
+<p><strong>安全性问题</strong><br>始终使用 origin 和 source 属性验证发件人的身份。</p>
+<h4 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a><strong>JSONP</strong></h4><p>JSONP（JSON with Padding）也是常用的一种跨域方式。</p>
+<p><strong>原理</strong><br>HTML 的 script 标签可以加载并执行其他域的 JS 文件。（DOM 天生可以跨域）</p>
+<p>JSONP 实际上就是回调函数和被包含在回调函数中的 JSON。JSONP 由两部分组成：回调函数和数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">callback(&#123;&quot;name&quot;: &quot;wangjw&quot;&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>回调函数必须在浏览器执行 JSONP 响应时就要存在。</p>
+<p>一个完整的 JSONP 请求如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 本地脚本文件内容</span><br><span class="line">function foo(response) &#123;</span><br><span class="line">  document.getElementById(&quot;output&quot;).innerHTML = response.bar;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">var tag = document.createElement(&quot;script&quot;);</span><br><span class="line">tag.src = &apos;somewhere_else.php?callback=foo&apos;;</span><br><span class="line"></span><br><span class="line">document.getElementsByTagName(&quot;head&quot;)[0].appendChild(tag);</span><br><span class="line"></span><br><span class="line">// 请求脚本文件内容</span><br><span class="line">foo(&#123;bar: &apos;hello world&apos;&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>浏览器请求到脚本文件并执行的时候就调用 foo() 方法，并把 JSON 内容渲染到页面上。</p>
+<p><strong>场景</strong><br>外链 JS 这种方案只支持 GET 方法，一般用于获取数据，不用来提交数据。</p>
+<p><strong>优缺点</strong><br>优点：不受同源策略的限制；兼容性好。<br>缺点：只能用于 GET 请求。</p>
+<h4 id="图像Ping"><a href="#图像Ping" class="headerlink" title="图像Ping"></a><strong>图像Ping</strong></h4><p>图像Ping 的跨域方式与 JSONP 一样，利用的也是 DOM 元素天生跨域的特性。</p>
+<p><strong>实现方式</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let img = new Image();</span><br><span class="line"></span><br><span class="line">img.onload = img.onerror = function() &#123;</span><br><span class="line">  alert(&apos;done&apos;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">img.src = &apos;http://www.exmaple.com/test?name=wangjw&apos;</span><br></pre></td></tr></table></figure></p>
+<p><strong>应用场景</strong><br>常用于跟踪用户点击页面（如百度统计的实现方式就是每次请求一个 gif 图片）或动态广告曝光次数。</p>
+<p><strong>缺点</strong><br>只能发送 GET 请求。<br>无法获取服务器的响应文本，因此只能用于浏览器与服务器间的单向通信。</p>
+<h4 id="CSST"><a href="#CSST" class="headerlink" title="CSST"></a><strong>CSST</strong></h4><p>一种用 CSS 跨域传输文本的方案。</p>
+<p><strong>原理</strong><br>通过读取 CSS3 content 属性获取传送内容。同样利用的是 DOM 元素（link 元素）天生跨域的特性。</p>
+<p>步骤：通过 link 标签向服务器发送请求，服务器返回 CSS 文件，客户端通过获取特定元素的 content 属性来获取响应数据。</p>
+<p><strong>优缺点</strong><br>优点：相比 JSONP 更为安全，不需要执行跨站脚本。<br>缺点：没有 JSONP 适配广，CSST 依赖支持 CSS3 的浏览器。</p>
+<h4 id="window-name"><a href="#window-name" class="headerlink" title="window.name"></a><strong>window.name</strong></h4><p>在一个窗口（window）的生命周期内，窗口载入的所有的页面（iframe) 都是共享一个 window.name 的，每个页面都对 window.name 有读写权限，所以可以通过这个属性来共享数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// iframe a</span><br><span class="line">window.name.data = &#123;</span><br><span class="line">  a: &apos;hello&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// iframe b</span><br><span class="line">document.getElmentById(&apos;box&apos;).innnerHTML = window.name.data.a;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Hack技巧"><a href="#Hack技巧" class="headerlink" title="Hack技巧"></a><strong>Hack技巧</strong></h4><p>1）IE6/7 下不同 iframe 共享一个 navigator 对象，可以用于传递信息。</p>
+<p>2）通过 hash 传递信息：同一个页面不同 iframe 是共享 location.hash 属性的，所以也可以通过这一属性进行通信。</p>
+<h3 id="跨子域策略"><a href="#跨子域策略" class="headerlink" title="跨子域策略"></a><strong>跨子域策略</strong></h3><p>若两个源主域相同，但子域不同，也是无法直接通信的。例如<code>http://h5.jd.com/a.html</code>和<code>http://m.jd.com/b.html</code>这两个页面就是子域不同。子域不同的两个页面，除了可以使用上面的跨域策略通信外，还有一些额外的方法可以使用。</p>
+<h4 id="document-domain"><a href="#document-domain" class="headerlink" title="document.domain"></a><strong>document.domain</strong></h4><p>可以为两个子域不同的源设置相同的 document.domain 属性，这样就可以实现跨子域通信了（当然，只能把document.domain设置成自身或更高一级的父域）。比如有<code>http://h5.jd.com/a.html</code>和<code>http://m.jd.com/b.html</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// iframe a</span><br><span class="line">document.domain = &apos;jd.com&apos;;</span><br><span class="line"></span><br><span class="line">// ifram b</span><br><span class="line">document.domain = &apos;jd.com&apos;;</span><br></pre></td></tr></table></figure></p>
+<p><strong>场景</strong><br>document.domain 的场景只适用于不同子域的框架（iframe）间的交互，及主域必须相同的不同源。</p>
+<p><strong>限制</strong><br>同域 document 提供的是页面间的互操作，需要载入 iframe 页面。</p>
+<p><strong>参考</strong><br><a href="https://github.com/zswang/csst" target="_blank" rel="noopener">CSST</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">HTTP访问控制</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy" target="_blank" rel="noopener">浏览器的同源策略</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端综合/" rel="tag"># 前端综合</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/10/mobile-develop/" rel="next" title="移动端开发总结">
+                <i class="fa fa-chevron-left"></i> 移动端开发总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/18/quick-sort-md/" rel="prev" title="快速排序">
+                快速排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">wangjinwei</p>
+              <p class="site-description motion-element" itemprop="description">write things</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、同源策略"><span class="nav-number">1.</span> <span class="nav-text">一、同源策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、跨域策略"><span class="nav-number">2.</span> <span class="nav-text">二、跨域策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CORS"><span class="nav-number">2.1.</span> <span class="nav-text">CORS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#postMessage"><span class="nav-number">2.2.</span> <span class="nav-text">postMessage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JSONP"><span class="nav-number">2.3.</span> <span class="nav-text">JSONP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图像Ping"><span class="nav-number">2.4.</span> <span class="nav-text">图像Ping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CSST"><span class="nav-number">2.5.</span> <span class="nav-text">CSST</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#window-name"><span class="nav-number">2.6.</span> <span class="nav-text">window.name</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hack技巧"><span class="nav-number">2.7.</span> <span class="nav-text">Hack技巧</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨子域策略"><span class="nav-number">3.</span> <span class="nav-text">跨子域策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#document-domain"><span class="nav-number">3.1.</span> <span class="nav-text">document.domain</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangjinwei</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
