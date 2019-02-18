@@ -80,4 +80,4 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:wangjw219/wangjw219.github.io.git
-  branch: public
+  branch: gh-pages
