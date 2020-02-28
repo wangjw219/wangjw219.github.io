@@ -1,5 +1,6 @@
 services:
     - docker
 script:
-    - docker build -t wangjw219/myblog:latest
+    - docker build . -t myblog:latest
+    - docker tag myblog:latest wangjw219/myblog:latest
     - docker push wangjw219/myblog:latest
