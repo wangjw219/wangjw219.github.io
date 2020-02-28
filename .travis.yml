@@ -1,0 +1,5 @@
+services:
+    - docker
+script:
+    - docker build -t wangjw219/myblog:latest
+    - docker push wangjw219/myblog:latest
